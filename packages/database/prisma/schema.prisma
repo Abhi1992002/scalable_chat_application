@@ -17,7 +17,8 @@ model User {
 }
 
 model Friends {
-  friendId String @id
+  id       String @id @default(cuid())
+  friendId String
 
   User   User?  @relation(fields: [userId], references: [id])
   userId String
@@ -25,11 +26,15 @@ model Friends {
 
 // for single chat purpose
 model Message {
-  id        String   @id @default(uuid())
-  text      String
-  createdAt DateTime @default(now()) @map("created_at")
-  sender    String
-  reciever  String
+  id         String   @id @default(uuid())
+  text       String
+  createdAt  DateTime @map("created_at")
+  sender     String
+  senderId   String
+  reciever   String
+  recieverId String?
+  isDeleted  Boolean? @default(false)
+  isEdited   Boolean? @default(false)
 
   @@map("messages")
 }

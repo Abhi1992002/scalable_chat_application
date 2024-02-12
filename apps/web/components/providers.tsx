@@ -2,6 +2,8 @@
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
+import { RecoilRoot } from "recoil";
+
 type ProvidersProps = {
   children: React.ReactNode;
 };
@@ -9,7 +11,7 @@ type ProvidersProps = {
 export const Providers = ({ children }: ProvidersProps) => {
   return (
     <ClerkProvider>
-      {children}
+      <RecoilRoot>{children}</RecoilRoot>
       <Toaster />
     </ClerkProvider>
   );

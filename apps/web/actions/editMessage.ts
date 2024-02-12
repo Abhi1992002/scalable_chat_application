@@ -3,7 +3,13 @@
 import { currentUser } from "@clerk/nextjs";
 import { db } from "../lib/db";
 
-export const addFriend = async (userId: string) => {
+export const updateMessage = async ({
+  chatId,
+  text,
+}: {
+  chatId: string;
+  text: string;
+}) => {
   try {
     const user = await currentUser();
 
@@ -11,21 +17,17 @@ export const addFriend = async (userId: string) => {
       return { error: "You are not authorised" };
     }
 
-    await db.friends.create({
+    await db.message.updateMany({
+      where: {
+        id: chatId,
+      },
       data: {
-        friendId: userId,
-        userId: user.id,
+        text: text,
+        isEdited: true,
       },
     });
 
-    await db.friends.create({
-      data: {
-        userId: userId,
-        friendId: user.id,
-      },
-    });
-
-    return { success: "friend successfullt added" };
+    return { success: "message Updated successfully" };
   } catch (error) {
     console.log(error);
     return { error: "Something went wrong" };

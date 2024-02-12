@@ -6,10 +6,14 @@ type SidebarProps = {};
 
 export const Sidebar = ({}: SidebarProps) => {
   return (
-    <div className="bg-black w-[400px] h-full  flex items-center justify-center">
-      <div className="w-[95%] h-[95%] p-4 border border-white/40 rounded-xl">
-        <FriendForm />
-        <FriendsList />
+    <div className="bg-[#F4F8F9] w-[400px] h-full  flex items-center justify-center ">
+      <div className="w-full h-full  border border-black/20 shadow-xl shadow-black/40">
+        <div className="p-4 border-b border-black/20">
+          <FriendForm />
+        </div>
+        <div>
+          <FriendsList />
+        </div>
       </div>
     </div>
   );

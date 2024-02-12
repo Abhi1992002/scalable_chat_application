@@ -17,7 +17,6 @@ export const useCurrentUser = () => {
       }
       if (data.detail) {
         setUser(data.detail);
-        console.log(user);
       }
     });
   }, []);

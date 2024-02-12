@@ -9,7 +9,7 @@ type ChatRoomProps = {
 
 const ChatRoom = ({ params }: ChatRoomProps) => {
   return (
-    <div className="w-full h-full bg-black p-4">
+    <div className="w-full h-full bg-white">
       <ChatPage chatId={params.chatId} />
     </div>
   );

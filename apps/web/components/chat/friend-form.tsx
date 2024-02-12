@@ -38,7 +38,7 @@ export const FriendForm = ({}: FriendFormProps) => {
         type="text"
         placeholder="Search with username"
         value={value}
-        className="placeholder:text-white/40 border border-white/40"
+        className="placeholder:text-black/40 border border-black/40"
         onChange={(e) => {
           setLoading(true);
           setValue(e.target.value);

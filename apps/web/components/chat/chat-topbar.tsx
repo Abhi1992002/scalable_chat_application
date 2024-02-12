@@ -1,17 +1,34 @@
 import React from "react";
 import { UserAvatar } from "./user-avatar";
+import { useRecoilValue } from "recoil";
+import { onlineState } from "../../store/online-store";
 
 type ChatTopbarProps = {
   userImg: string;
   username: string;
+  userId: string;
 };
 
-export const ChatTopbar = ({ userImg, username }: ChatTopbarProps) => {
+export const ChatTopbar = ({ userImg, username, userId }: ChatTopbarProps) => {
+  const online = useRecoilValue(onlineState);
   return (
     <div className="w-full h-full flex items-center">
       <div className="flex items-center space-x-4">
-        <UserAvatar userImg={userImg} />
-        <p>{username}</p>
+        {userImg && <UserAvatar userImg={userImg} />}
+        <div className="flex-1">
+          <p className=" font-bold">{username}</p>
+          <p className="text-sm font-medium text-black/60">
+            {online[userId] ? (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full" /> online
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-red-500 rounded-full" /> offline
+              </div>
+            )}
+          </p>
+        </div>
       </div>
     </div>
   );

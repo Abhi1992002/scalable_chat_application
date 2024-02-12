@@ -25,10 +25,39 @@ export const getAllMyFriends = async () => {
       });
     });
 
+    const latestMessagesPromises = friendIds.map((friend) => {
+      return db.message.findFirst({
+        where: {
+          OR: [
+            {
+              senderId: user.id,
+              recieverId: friend.friendId,
+            },
+            {
+              senderId: friend.friendId,
+              recieverId: user.id,
+            },
+          ],
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    });
+    const latestMessages = await Promise.all(latestMessagesPromises);
     const list = await Promise.all(friendDetailsPromises);
-    return { list: list };
+
+    const friendListWithLatestMessage = list.map((friend, index) => {
+      return {
+        friend: friend,
+        latestMessage: latestMessages[index],
+      };
+    });
+
+    console.log(friendListWithLatestMessage);
+
+    return { list: friendListWithLatestMessage };
   } catch (error) {
-    console.log(error);
     return { error: "Something went wrong" };
   }
 };

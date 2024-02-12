@@ -1,10 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { SocketProvider } from "../context/SocketProvider";
+import { Montserrat } from "next/font/google";
 import { Providers } from "../components/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Turborepo",
@@ -18,11 +17,9 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <SocketProvider>
-        <body className={inter.className}>
-          <Providers>{children}</Providers>
-        </body>
-      </SocketProvider>
+      <body className={montserrat.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

@@ -45,14 +45,22 @@ export async function startMessageConsumer() {
       if (!message.value) return;
       try {
         const value = JSON.parse(message.value.toString());
+        console.log("--------- start to saving messages in db ------------");
+        console.log(value);
         await db.message.create({
           data: {
+            id: value.id,
             text: value.message,
             sender: value.sender,
             reciever: value.reciever,
+            senderId: value.senderId,
+            recieverId: value.recieverId,
+            createdAt: value.createdAt,
           },
         });
+        console.log("--------- message saving complete ------------");
       } catch (error) {
+        console.log(error);
         pause();
         setTimeout(() => {
           consumer.resume([{ topic: "MESSAGES" }]);

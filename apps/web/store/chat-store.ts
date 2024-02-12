@@ -1,25 +1,22 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
-interface ChatMessage {
+export interface ChatMessage {
+  id: string;
   message: string;
   sender: string;
+  reciever: string;
+  senderId: string;
+  recieverId: string;
+  createdAt: string;
+  isEdited: boolean;
+  isDeleted: boolean;
 }
 
-interface ChatState {
+export interface ChatState {
   [userId: string]: ChatMessage[];
 }
 
-const chatsState = atom<ChatState>({
+export const chatsState = atom<ChatState>({
   key: "chatsState",
   default: {},
-});
-
-const chatSelectorState = selector({
-  key: "chatSelectorState",
-  get:
-    ({ get }) =>
-    (userId: string) => {
-      const chats = get(chatsState);
-      return chats[userId];
-    },
 });
