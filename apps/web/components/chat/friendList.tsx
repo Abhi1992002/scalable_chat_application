@@ -6,39 +6,19 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "../../lib/utils";
 import { UserAvatar } from "./user-avatar";
 import { formatTime } from "../../lib/time";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { onlineState } from "../../store/online-store";
+import { friendState } from "../../store/friend-store";
+import { typingState } from "../../store/typing-store";
 
 type FriendsListProps = {};
 
-interface Friend {
-  id: string;
-  name: string | null;
-  username: string | null;
-  email: string | null;
-  profileImage: string | null;
-}
-
-interface Message {
-  id: string;
-  text: string;
-  createdAt: Date;
-  sender: string;
-  senderId: string;
-  reciever: string;
-  recieverId: string | null;
-}
-
-interface listType {
-  friend: Friend | null;
-  latestMessage: Message | null | undefined;
-}
-
 export const FriendsList = ({}: FriendsListProps) => {
-  const [lists, setList] = useState<listType[]>();
+  const [lists, setList] = useRecoilState(friendState);
   const router = useRouter();
   const chatId = usePathname().split("/")[2];
   const online = useRecoilValue(onlineState);
+  const typing = useRecoilValue(typingState);
 
   const currentTime = new Date();
   useEffect(() => {
@@ -95,7 +75,9 @@ export const FriendsList = ({}: FriendsListProps) => {
             )}
           </div>
           <div className="flex items-center mt-4">
-            {list.latestMessage ? (
+            {typing[list.friend?.id!] ? (
+              <p>typing...</p>
+            ) : list.latestMessage ? (
               <p className="text-sm font-medium text-black/60">
                 {list.latestMessage?.text.slice(0, 70)}
 

@@ -12,6 +12,9 @@ export const Sidebar = ({}: SidebarProps) => {
           <FriendForm />
         </div>
         <div>
+          <h1 className="text-xl font-semibold p-4 border-b-2 border-black/60">
+            FriendList
+          </h1>
           <FriendsList />
         </div>
       </div>

@@ -73,6 +73,16 @@ class SocketServices {
         );
       });
 
+      socket.on("typing", async (userId: string) => {
+        console.log("3.) focused on server");
+        io.emit("event:typing", userId);
+      });
+
+      socket.on("not-typing", async (userId: string) => {
+        console.log("4.) blurred on server");
+        io.emit("event:not-typing", userId);
+      });
+
       socket.on(
         "event:message",
         async ({

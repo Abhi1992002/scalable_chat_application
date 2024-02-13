@@ -21,15 +21,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { useSocket } from "../../context/socketProvider";
+import { useUser } from "@clerk/nextjs";
 type ChatDropDownProps = {
   chatId: string;
   text: string;
+  reciever: string;
+  sender: string;
+  recieverId: string;
 };
 
-export const ChatDropDown = ({ text, chatId }: ChatDropDownProps) => {
+export const ChatDropDown = ({
+  text,
+  chatId,
+  reciever,
+  recieverId,
+  sender,
+}: ChatDropDownProps) => {
   const setChatState = useSetRecoilState(chatsState);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(text);
+  const { sendMessage } = useSocket();
+  const { user } = useUser();
   const onDeleteMessage = () => {
     setChatState((prevState) => {
       const newState: ChatState = {};
@@ -103,6 +116,12 @@ export const ChatDropDown = ({ text, chatId }: ChatDropDownProps) => {
     }
   };
 
+  const onResendMessage = () => {
+    if (user) {
+      sendMessage(message, reciever, user.username!, recieverId);
+    }
+  };
+
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -121,7 +140,11 @@ export const ChatDropDown = ({ text, chatId }: ChatDropDownProps) => {
                 Delete
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem>Resend</DropdownMenuItem>
+            {user?.id !== recieverId && (
+              <DropdownMenuItem onClick={() => onResendMessage()}>
+                Resend
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
 

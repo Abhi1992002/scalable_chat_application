@@ -12,7 +12,7 @@ type ChatInputProps = {
 
 export const ChatInput = ({ reciever, sender, recieverId }: ChatInputProps) => {
   const [message, setMessage] = useState("");
-  const { sendMessage } = useSocket();
+  const { sendMessage, onFocus, onblur } = useSocket();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
@@ -30,6 +30,8 @@ export const ChatInput = ({ reciever, sender, recieverId }: ChatInputProps) => {
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onFocus={() => onFocus()}
+          onBlur={() => onblur()}
           onKeyDown={(e) => handleKeyDown(e)}
           className="border border-neutral-300 placeholder:text-black/40 bg-white min-h-[100px] placeholder:font-semibold "
           placeholder="Enter to send. Shift + Enter to add new line"

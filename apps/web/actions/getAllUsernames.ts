@@ -12,6 +12,9 @@ export const getAllUsername = async (searchQuery: string) => {
 
     const userList = await db.user.findMany({
       where: {
+        NOT: {
+          id: user.id,
+        },
         username: {
           contains: searchQuery,
         },

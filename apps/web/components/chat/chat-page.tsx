@@ -9,6 +9,7 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useRecoilValue } from "recoil";
 import { chatsState } from "../../store/chat-store";
 import { ChatDisplay } from "./chats-display";
+import { useRouter } from "next/navigation";
 type ChatPageProps = {
   chatId: string;
 };
@@ -17,10 +18,12 @@ export const ChatPage = ({ chatId }: ChatPageProps) => {
   const [userDetail, setUserDetail] = useState<User>();
   const chats = useRecoilValue(chatsState);
   const { me } = useCurrentUser();
+  const router = useRouter();
   useEffect(() => {
     getUserDetails(chatId).then((data) => {
       if (data.error) {
         toast.error(data.error);
+        router.push("/chatRoom");
       }
       if (data.detail) {
         setUserDetail(data.detail);

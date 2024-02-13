@@ -11,13 +11,16 @@ export const ChatDisplay = ({ chats }: ChatDisplayProps) => {
   const scrollableContainerRef = useRef<HTMLDivElement>(null!);
   useEffect(() => {
     if (scrollableContainerRef.current) {
-      scrollableContainerRef.current.scrollTop =
-        scrollableContainerRef.current.scrollHeight;
+      scrollableContainerRef.current.scrollTo({
+        top: scrollableContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [chats]);
+
   return (
     <div
-      className="h-full overflow-auto scrollable-container px-6 py-4 "
+      className="h-full overflow-auto scrollable-container py-4 "
       ref={scrollableContainerRef}
     >
       <ChatMessageBox chats={chats} />

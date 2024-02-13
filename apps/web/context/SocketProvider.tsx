@@ -10,6 +10,7 @@ interface SocketProviderProps {
   children?: React.ReactNode;
 }
 import { v4 as uuidv4 } from "uuid";
+import { typingState } from "../store/typing-store";
 interface ISocketContext {
   sendMessage: (
     msg: string,
@@ -18,6 +19,8 @@ interface ISocketContext {
     recieverId: string,
     createdAt?: Date | string
   ) => any;
+  onFocus: () => void;
+  onblur: () => void;
 }
 
 const SocketContext = React.createContext<ISocketContext | null>(null);
@@ -33,6 +36,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>();
   const setChatDetail = useSetRecoilState(chatsState);
   const setOnlineState = useSetRecoilState(onlineState);
+  const setTypingState = useSetRecoilState(typingState);
   const { user } = useUser();
 
   const sendMessage: ISocketContext["sendMessage"] = useCallback(
@@ -93,9 +97,35 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     }));
   }, []);
 
+  const onFocus = () => {
+    console.log("1.) focused by me");
+    socket?.emit("typing", user?.id);
+  };
+
+  const onblur = () => {
+    console.log("5.) blurred by me");
+    socket?.emit("not-typing", user?.id);
+  };
+
   useEffect(() => {
     if (user?.id) {
       const _socket = io("http://localhost:8000");
+
+      _socket.on("event:typing", (userId: string) => {
+        console.log("6.) focused");
+        setTypingState((prevTyping) => ({
+          ...prevTyping,
+          [userId]: true,
+        }));
+      });
+      _socket.on("event:not-typing", (userId: string) => {
+        console.log("7.) blurred");
+        setTypingState((prevTyping) => ({
+          ...prevTyping,
+          [userId]: false,
+        }));
+      });
+
       _socket.on("user-joined", (userId: string) => {
         setOnlineState((prevOnlineUsers) => ({
           ...prevOnlineUsers,
@@ -129,13 +159,14 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         _socket.off("message", onMessageRec);
         _socket.off("user-joined");
         _socket.off("unjoined");
+        _socket.off("event:typing");
         setSocket(undefined);
       };
     }
   }, [user?.id]);
 
   return (
-    <SocketContext.Provider value={{ sendMessage }}>
+    <SocketContext.Provider value={{ sendMessage, onFocus, onblur }}>
       {children}
     </SocketContext.Provider>
   );

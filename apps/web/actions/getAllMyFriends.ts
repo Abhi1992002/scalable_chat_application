@@ -54,8 +54,6 @@ export const getAllMyFriends = async () => {
       };
     });
 
-    console.log(friendListWithLatestMessage);
-
     return { list: friendListWithLatestMessage };
   } catch (error) {
     return { error: "Something went wrong" };
