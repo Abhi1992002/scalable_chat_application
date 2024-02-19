@@ -1,26 +1,25 @@
 import { Server } from "socket.io";
 import Redis from "ioRedis";
-import { db } from "./prisma";
 import { produceMessage } from "./kafka";
 
 const pub = new Redis({
-  host: "redis-38a93c07-abhimanyu1992002-e008.a.aivencloud.com",
+  host: process.env.REDIS_HOST,
   port: 20784,
   username: "default",
-  password: "AVNS_4fUYSrrktqY2qHf9RyT",
+  password: process.env.REDIS_PASSWORD,
 });
 const sub = new Redis({
-  host: "redis-38a93c07-abhimanyu1992002-e008.a.aivencloud.com",
+  host: process.env.REDIS_HOST,
   port: 20784,
   username: "default",
-  password: "AVNS_4fUYSrrktqY2qHf9RyT",
+  password: process.env.REDIS_PASSWORD,
 });
 
 const redis = new Redis({
-  host: "redis-38a93c07-abhimanyu1992002-e008.a.aivencloud.com",
+  host: process.env.REDIS_HOST,
   port: 20784,
   username: "default",
-  password: "AVNS_4fUYSrrktqY2qHf9RyT",
+  password: process.env.REDIS_PASSWORD,
 });
 
 class SocketServices {
