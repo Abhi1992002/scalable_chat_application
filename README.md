@@ -1,4 +1,4 @@
-## About
+## About (Still working on it)
 
 - This is a Scalable chat application, created using web sockets, redis , kafka.js , postgres and NextJS.
 
